@@ -1,14 +1,228 @@
-﻿namespace Lab_02
+﻿using static Lab_02.Hero;
+using D = System.IO.Directory;
+using J = System.Text.Json.JsonSerializer;
+namespace Lab_02
 {
-    class Program
+    public class Program
     {
+        public static readonly string ProgPath = D.GetParent(D.GetCurrentDirectory()).Parent.Parent.FullName;
+        public static string FilePath = null;
+        public static HashSet<Knight> Set = new HashSet<Knight>();
+        public static DateTime DateSetInit;
         static void Main()
         {
-            
+            Console.CancelKeyPress += ControlCancel;
+            LoadFile();
+            CommandProcessing();
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("Программа завершилась");
+            Console.ForegroundColor = ConsoleColor.White;
         }
+        static void LoadFile()
+        {
+            do
+            {
+                try
+                {
+                    Console.WriteLine("Назовите существующий или новый файл");
+                    string input = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        throw new Exception(" Пустой ввод не допускается");
+                       
+                    }
+                    FilePath = ProgPath + @"\" + input + ".json";
+                    if (File.Exists(FilePath))
+                    {
+                        Console.WriteLine("Была загружена коллекция из " + FilePath);
+                        string json = File.ReadAllText(FilePath);
+                        Set = J.Deserialize<HashSet<Knight>>(json);
+                        DateSetInit = DateTime.Now;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Был создана новая коллекция по пути " + FilePath);
+
+                        
+                        File.WriteAllText(FilePath, "[]");
+                        
+                        
+                        DateSetInit = DateTime.Now;
+
+
+                    }
+
+                    break;
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Произошла ошибка:" + e.Message);
+                }
+
+            } while (true);
+        }
+        static void CommandProcessing()
+        {
+            Console.WriteLine("Введите команду. [help - вывести справку по доступным командам]");
+            
+            start:
+            try
+            {
+                string[] args = Console.ReadLine().Trim().Split(" ");
+                switch (args[0])
+                {
+                    case "help":
+                        Cmd.Help();
+                        goto start;
+                    case "info":
+                        Cmd.Info();
+                        goto start;
+                    case "show":
+                        Cmd.Show();
+                        goto start;
+                    case "insert":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Не введен id элемента");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.Insert(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+                    case "update":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Не введен id элемента");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.Update(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+                    case "remove":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Не введен id элемента");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.Remove(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+                    case "clear":
+                        Cmd.Clear();
+                        goto start;
+                    case "save":
+                        Cmd.Save();
+                        goto start;
+                    case "execute_script":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Нe введенно имя файла");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.ExecuteScript(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+                    case "exit":
+                        break;
+                    case "print_field_descending":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Нe введено поле элемента");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.PrintFieldDescending(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+                    case "max":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Нe введено поле элемента");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.Max(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+
+                    case "min":
+                        if (args.Length == 1)
+                        {
+                            Console.WriteLine("Ошибка. Нe введено поле элемента");
+                            goto start;
+                        }
+                        else if (args.Length == 2)
+                        {
+                            Cmd.Min(args[1]);
+                            goto start;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                            goto start;
+                        }
+                    default:
+                        Console.WriteLine("Неверный ввод");
+                        goto start;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Ошибка ввода: " + e.Message);
+                goto start;
+            }
+        }
+
         static async void ControlCancel(object? sender, ConsoleCancelEventArgs e)
         {
-            e.Cancel = true;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Была введена секретная команда - Экстренный взлет на воздух");
+            Console.ForegroundColor = ConsoleColor.White;
+            e.Cancel = false;
+
+            Environment.Exit(0);
         }
         public static class GameSession
         {
@@ -95,10 +309,6 @@
                 public string Name { get; set; } = "Unknown";
                 public decimal Health { get; set; } = 10;
                 public decimal Damage { get; set; } = 10;
-
-
-
-
             }
             public class Ghoul : Enemy
             {
@@ -110,7 +320,6 @@
                 }
 
             }
-
             public class Slime : Enemy
             {
                 public Slime()
@@ -123,182 +332,6 @@
 
             }
 
-        }
-
-        public class NoWeaponException : Exception
-        {
-            public NoWeaponException(string message) : base(message)
-            {
-
-            }
-            public override string Message => base.Message + " [Игровое Исключение]";
-        }
-        public record Weapon
-        {
-            public string Name { get; init; }
-            public int Damage { get; init; }
-
-            public Weapon(string name)
-            {
-                Name = name;
-                Damage = Random.Shared.Next(1, 10);
-            }
-            public override int GetHashCode()
-            {
-                return Damage;
-            }
-            public override string ToString()
-            {
-                return Name.ToString();
-            }
-
-        }
-        public interface Item
-        {
-            public string Name { get; }
-            public abstract void Use(Hero hero);
-        }
-        public record StrongPotion : Item
-        {
-            public string Name { get => "Сильное зелье"; }
-            public void Use(Hero hero)
-            {
-                hero.Health += Random.Shared.Next(5, 40);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Вы увеличили свое максимальное здоровье");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-        }
-        public abstract class Hero
-        {
-            //Харктеристики
-            public string Name { get; protected set; }
-            public string ClassName { get; protected set; }
-
-            public decimal Health { get; set; } = 20;
-            public int CritChance { get; set; } = 10;
-            public decimal BonusHeart { get; set; } = 0;
-
-            protected Stack<Item> Pocket = new Stack<Item>();
-            //Навыки
-            public enum PassiveSkill
-            {
-                BlastPunch = 1,
-                SteelHeart = 2
-            }
-            public enum ActiveSkill
-            {
-                Perfection = 1,
-                MeltingHeart = 2
-            }
-            public PassiveSkill PSkill { get; set; }
-            public ActiveSkill ASkill { get; set; }
-            //Оружие
-            protected Weapon Weapon { get; set; }
-            struct Shield
-            {
-                public int defense { get; set; }
-            }
-            //Методы
-            public Hero(string name, string className)
-
-            {
-                Name = name;
-                ClassName = className;
-                ASkill = ActiveSkill.Perfection;
-
-                PSkill = (PassiveSkill)Random.Shared.Next(1, 3);
-
-                if (PSkill is PassiveSkill.SteelHeart)
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Была получена пассивная способность Стальное Сердце [+10 к здоровью]");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Health += 10;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Была получена пассивная способность Взрывной удар [+10 к урону от оружия]");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-            }
-
-            public void GetWeapon(Weapon weapon)
-            {
-                Weapon = weapon;
-                Console.WriteLine($"{this.Name} получил оружие {weapon.Name} имеющее {weapon.Damage} урона!");
-            }
-            public void GetItem(Item item)
-            {
-                Console.WriteLine($"Герой получил {item.Name}");
-                Pocket.Push(item);
-            }
-            public void UseItem()
-            {
-                if (Pocket.Count > 0)
-                {
-                    var temp = Pocket.Pop();
-                    temp.Use(this);
-                    Console.WriteLine("Предмет был использован");
-                }
-                else
-                {
-                    Console.WriteLine("У вас нет предметов");
-                }
-            }
-
-            public override bool Equals(object? obj)
-            {
-                return obj.GetHashCode == obj.GetHashCode;
-            }
-            public override int GetHashCode()
-            {
-                return Convert.ToInt32(Health);
-            }
-            public override string ToString()
-            {
-                return $"{this.Name}";
-            }
-
-        }
-        public class Knight : Hero
-        {
-
-            public Knight(string name, string className) : base(name, className)
-            {
-
-            }
-
-
-            public decimal Slash()
-            {
-                try
-                {
-                    if (Weapon != null)
-                    {
-                        int bonus = PSkill is PassiveSkill.BlastPunch ? 10 : 0;
-
-                        Console.WriteLine($"{this.Name} взмахнул оружием на {Weapon.Damage + bonus} урона");
-                        return Weapon.Damage + bonus;
-                    }
-                    else
-                    {
-                        throw new NoWeaponException("Weapon is null");
-
-                    }
-                }
-                catch (NoWeaponException ex)
-                {
-                    Console.WriteLine($"У {this.Name} нет оружия!");
-                    return 0;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Произошла ошибка: {ex.Message}");
-                    return 0;
-                }
-            }
         }
 
     }
