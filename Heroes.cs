@@ -157,13 +157,13 @@ namespace Lab_02
             string name = Console.ReadLine();
             Console.WriteLine("Введите значение параметра 'Здоровье' [Значение поля должно быть больше 0 и не больше 30]");
         hStart:
-            int.TryParse(Console.ReadLine(), out int health);
+            decimal.TryParse(Console.ReadLine(), out decimal health);
             switch (health)
             {
                 case > 0 and <= 30:
                     break;
                 default:
-                    Console.WriteLine("Неккоректное значение");
+                    Console.WriteLine("Некорректный ввод");
                     goto hStart;
             }
             Console.WriteLine("Введите значение параметра 'Шанс крит. удара' [Значение поля может быть максимум 90]");
@@ -205,7 +205,7 @@ namespace Lab_02
                     aSkill = ActiveSkill.MeltingHeart;
                     break;
                 default:
-                    Console.WriteLine("Неккоректный ввод");
+                    Console.WriteLine("Некорректный ввод");
                     goto askillStart;
             }
             Console.WriteLine("Введите название для оружия");
@@ -220,7 +220,7 @@ namespace Lab_02
                     shield = new Defense(def);
                     break;
                 default:
-                    Console.WriteLine("Неккоректное значение");
+                    Console.WriteLine("Некорректное значение");
                     goto shStart;
             }
 

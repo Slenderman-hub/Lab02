@@ -11,9 +11,9 @@ namespace Lab_02
         //help — вывести справку по доступным командам.
         //info — вывести информацию о коллекции(тип, дата инициализации, количество элементов).
         //show — вывести все элементы коллекции в строковом представлении.
-        //insert {id элемента} — добавить новый элемент в коллекцию.
+        //insert — добавить новый элемент в коллекцию.
         //update {id элемента} — обновить элемент коллекции по идентификатору.
-        //remove id — удалить элемент по ключу (для словарей) или по идентификатору.
+        //remove {id элемента} — удалить элемент по ключу (для словарей) или по идентификатору.
         //clear — очистить коллекцию.
         //save — сохранить коллекцию в файл.
         //execute_script {название файла} — выполнить набор команд из файла.
@@ -30,9 +30,9 @@ namespace Lab_02
                 help — вывести справку по доступным командам.
                 info — вывести информацию о коллекции (тип, дата инициализации, количество элементов).
                 show — вывести все элементы коллекции в строковом представлении.
-                insert {id элемента} — добавить новый элемент в коллекцию.
+                insert — добавить новый элемент в коллекцию.
                 update {id элемента} — обновить элемент коллекции по идентификатору.
-                remove id — удалить элемент по ключу (для словарей) или по идентификатору.
+                remove {id элемента} — удалить элемент по ключу (для словарей) или по идентификатору.
                 clear — очистить коллекцию.
                 save — сохранить коллекцию в файл.
                 execute_script {название файла} — выполнить набор команд из файла.
@@ -70,7 +70,7 @@ namespace Lab_02
                     foreach (var item in Program.Set)
                     {
 
-                        Console.WriteLine($"Id : {item.Id}, Класс:{item.ClassName} Имя: {item.Name},Шанс крит. удара: {item.CritChance},Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                        Console.WriteLine($"Id : {item.Id}, Класс: {item.ClassName}, Имя: {item.Name}, Шанс крит. удара: {item.CritChance}, Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
                         Console.WriteLine("\n");
 
                     }
@@ -79,33 +79,31 @@ namespace Lab_02
                     
             
         } 
-        public static void Insert(string arg)
+        public static void Insert()
         {
-            int.TryParse(arg, out int id);
-            if(id == 0)
+            int id = 0;
+            for (int i = 1; i <= Program.Set.Count + 1; i++)
             {
-                Console.WriteLine("Некорректный ввод аргумента");
-                return;
-            }
-            else
-            {
-                foreach (var item in Program.Set)
+                if (!Program.Ids.Contains(i))
                 {
-                    if(item.Id == id)
-                    {
-                        Console.WriteLine("Обьект с таким-же индентификатором уже существует");
-                        return;
-                    }
+                    id = i;
                 }
+            }
+            if (id == 0) 
+            { 
+                Console.WriteLine("Что-то пошло не так");
+                return; 
+            }
 
                 Console.WriteLine("Начало описания обьекта рыцарь");
                 Program.Set.Add(Knight.CreateKnight(id));
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Обьект был внесен в коллекцию");
+                Program.Ids.Add(id);
                 Console.ForegroundColor = ConsoleColor.White;
                 return;
 
-            }
+            
         }
         public static void Update(string arg)
         {
@@ -171,7 +169,8 @@ namespace Lab_02
                 }
                 else
                 {
-                    Program.Set.Remove(knight);                   
+                    Program.Set.Remove(knight);
+                    Program.Ids.Remove(id);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Обьект был удален из коллекции");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -272,53 +271,63 @@ namespace Lab_02
                 return;
             }
             HashSet<string> fields = ["Id", "CritChance", "Health", "Shield", "Weapon"];
-            if (fields.Contains(arg))
-            {
+            
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                switch (arg)
+                if (fields.Contains(arg))
                 {
-                    case "Id":
-                        int maxId = Program.Set.Max(item => item.Id);
-                        Knight maxIdKnight = Program.Set.First(item => item.Id == maxId);
-                        Console.WriteLine();
-                        Console.WriteLine($"Id : {maxIdKnight.Id}, Класс:{maxIdKnight.ClassName} Имя: {maxIdKnight.Name},Шанс крит. удара: {maxIdKnight.CritChance},Здоровье: {maxIdKnight.Health}, Акт. Навык: {maxIdKnight.ASkill}, Пассивный навык: {maxIdKnight.PSkill},\n Щит: {maxIdKnight.Shield.Def},Оружие: {maxIdKnight.Weapon.Name}, Урон Оружия: {maxIdKnight.Weapon.Damage}");
-                        break;
-                    case "Health":
-                        decimal maxHp = Program.Set.Max(item => item.Health);
-                        Knight maxHpKnight = Program.Set.First(item => item.Health == maxHp);
-                        Console.WriteLine();
-                        Console.WriteLine($"Id : {maxHpKnight.Id}, Класс:{maxHpKnight.ClassName} Имя: {maxHpKnight.Name},Шанс крит. удара: {maxHpKnight.CritChance},Здоровье: {maxHpKnight.Health}, Акт. Навык: {maxHpKnight.ASkill}, Пассивный навык: {maxHpKnight.PSkill},\n Щит: {maxHpKnight.Shield.Def},Оружие: {maxHpKnight.Weapon.Name}, Урон Оружия: {maxHpKnight.Weapon.Damage}");
-                        break;
 
-                    case "CritChance":
-                        int maxCC = Program.Set.Max(item => item.CritChance);
-                        Knight maxCCKnight = Program.Set.First(item => item.CritChance == maxCC);
-                        Console.WriteLine();
-                        Console.WriteLine($"Id : {maxCCKnight.Id}, Класс:{maxCCKnight.ClassName} Имя: {maxCCKnight.Name},Шанс крит. удара: {maxCCKnight.CritChance},Здоровье: {maxCCKnight.Health}, Акт. Навык: {maxCCKnight.ASkill}, Пассивный навык: {maxCCKnight.PSkill},\n Щит: {maxCCKnight.Shield.Def},Оружие: {maxCCKnight.Weapon.Name}, Урон Оружия: {maxCCKnight.Weapon.Damage}");
-                        break;
-                    case "Shield":
-                        int maxDef = Program.Set.Max(item => item.Shield.Def);
-                        Knight maxDefKnight = Program.Set.First(item => item.Shield.Def == maxDef);
-                        Console.WriteLine();
-                        Console.WriteLine($"Id : {maxDefKnight.Id}, Класс:{maxDefKnight.ClassName} Имя: {maxDefKnight.Name},Шанс крит. удара: {maxDefKnight.CritChance},Здоровье: {maxDefKnight.Health}, Акт. Навык: {maxDefKnight.ASkill}, Пассивный навык: {maxDefKnight.PSkill},\n Щит: {maxDefKnight.Shield.Def},Оружие: {maxDefKnight.Weapon.Name}, Урон Оружия: {maxDefKnight.Weapon.Damage}");
-                        break;
-                    case "Weapon":
-                        int maxDmg = Program.Set.Max(item => item.Weapon.Damage);
-                        Knight maxDmgKnight = Program.Set.First(item => item.Weapon.Damage == maxDmg);
-                        Console.WriteLine();
-                        Console.WriteLine($"Id : {maxDmgKnight.Id}, Класс:{maxDmgKnight.ClassName} Имя: {maxDmgKnight.Name},Шанс крит. удара: {maxDmgKnight.CritChance},Здоровье: {maxDmgKnight.Health}, Акт. Навык: {maxDmgKnight.ASkill}, Пассивный навык: {maxDmgKnight.PSkill},\n Щит: {maxDmgKnight.Shield.Def},Оружие: {maxDmgKnight.Weapon.Name}, Урон Оружия: {maxDmgKnight.Weapon.Damage}");
-                        break;
-                    default:
-                        Console.WriteLine("Неккоректное поле");
-                        break;
+
+                    switch (arg)
+                    {
+                        case "Id":
+                            int maxId = Program.Set.Max(item => item.Id);
+                            Knight maxIdKnight = Program.Set.First(item => item.Id == maxId);
+                            Console.WriteLine();
+                            Console.WriteLine($"Id : {maxIdKnight.Id}, Класс:{maxIdKnight.ClassName} Имя: {maxIdKnight.Name},Шанс крит. удара: {maxIdKnight.CritChance},Здоровье: {maxIdKnight.Health}, Акт. Навык: {maxIdKnight.ASkill}, Пассивный навык: {maxIdKnight.PSkill},\n Щит: {maxIdKnight.Shield.Def},Оружие: {maxIdKnight.Weapon.Name}, Урон Оружия: {maxIdKnight.Weapon.Damage}");
+                            break;
+                        case "Health":
+                            decimal maxHp = Program.Set.Max(item => item.Health);
+                            Knight maxHpKnight = Program.Set.First(item => item.Health == maxHp);
+                            Console.WriteLine();
+                            Console.WriteLine($"Id : {maxHpKnight.Id}, Класс:{maxHpKnight.ClassName} Имя: {maxHpKnight.Name},Шанс крит. удара: {maxHpKnight.CritChance},Здоровье: {maxHpKnight.Health}, Акт. Навык: {maxHpKnight.ASkill}, Пассивный навык: {maxHpKnight.PSkill},\n Щит: {maxHpKnight.Shield.Def},Оружие: {maxHpKnight.Weapon.Name}, Урон Оружия: {maxHpKnight.Weapon.Damage}");
+                            break;
+
+                        case "CritChance":
+                            int maxCC = Program.Set.Max(item => item.CritChance);
+                            Knight maxCCKnight = Program.Set.First(item => item.CritChance == maxCC);
+                            Console.WriteLine();
+                            Console.WriteLine($"Id : {maxCCKnight.Id}, Класс:{maxCCKnight.ClassName} Имя: {maxCCKnight.Name},Шанс крит. удара: {maxCCKnight.CritChance},Здоровье: {maxCCKnight.Health}, Акт. Навык: {maxCCKnight.ASkill}, Пассивный навык: {maxCCKnight.PSkill},\n Щит: {maxCCKnight.Shield.Def},Оружие: {maxCCKnight.Weapon.Name}, Урон Оружия: {maxCCKnight.Weapon.Damage}");
+                            break;
+                        case "Shield":
+                            int maxDef = Program.Set.Max(item => item.Shield.Def);
+                            Knight maxDefKnight = Program.Set.First(item => item.Shield.Def == maxDef);
+                            Console.WriteLine();
+                            Console.WriteLine($"Id : {maxDefKnight.Id}, Класс:{maxDefKnight.ClassName} Имя: {maxDefKnight.Name},Шанс крит. удара: {maxDefKnight.CritChance},Здоровье: {maxDefKnight.Health}, Акт. Навык: {maxDefKnight.ASkill}, Пассивный навык: {maxDefKnight.PSkill},\n Щит: {maxDefKnight.Shield.Def},Оружие: {maxDefKnight.Weapon.Name}, Урон Оружия: {maxDefKnight.Weapon.Damage}");
+                            break;
+                        case "Weapon":
+                            int maxDmg = Program.Set.Max(item => item.Weapon.Damage);
+                            Knight maxDmgKnight = Program.Set.First(item => item.Weapon.Damage == maxDmg);
+                            Console.WriteLine();
+                            Console.WriteLine($"Id : {maxDmgKnight.Id}, Класс:{maxDmgKnight.ClassName} Имя: {maxDmgKnight.Name},Шанс крит. удара: {maxDmgKnight.CritChance},Здоровье: {maxDmgKnight.Health}, Акт. Навык: {maxDmgKnight.ASkill}, Пассивный навык: {maxDmgKnight.PSkill},\n Щит: {maxDmgKnight.Shield.Def},Оружие: {maxDmgKnight.Weapon.Name}, Урон Оружия: {maxDmgKnight.Weapon.Damage}");
+                            break;
+                        default:
+                            Console.WriteLine("Неккоректное поле");
+                            break;
+                    }
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else
-            {
-                Console.WriteLine("Некорректное поле");
-            }
+                else
+                {
+
+                        Console.WriteLine("Некорректное поле");
+                
+                }
+
+
+           
+            
         }
+        
         public static void Min(string arg)
         {
             if (Program.Set.Count == 0)
@@ -377,7 +386,7 @@ namespace Lab_02
 
         public static void ExecuteScript(string arg)
         {
-            string filePath = Program.ProgPath + @"\" + arg + ".json";
+            string filePath = Program.ProgPath + @"\" + arg;
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("Файла несуществует");
@@ -395,146 +404,15 @@ namespace Lab_02
             }
             foreach(var item in args)
             {
-                string[] tokens = item.Split(" ");
-                switch (tokens[0])
+                if (Program.Flag)
                 {
-                    case "help":
-                        Help();
-                        break;
-                    case "info":
-                        Info();
-                        break;
-                    case "show":
-                        Show();
-                        break;
-                    case "insert":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Не введен id элемента");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            Insert(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-                    case "update":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Не введен id элемента");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            Update(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-                    case "remove":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Не введен id элемента");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            Remove(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-                    case "clear":
-                        Clear();
-                        break;
-                    case "save":
-                        Save();
-                        break;
-                    case "execute_script":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Нe введенно имя файла");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            ExecuteScript(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-                    case "exit":
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Окончание выполнения скрипт-файла в связи с командой exit");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        return;
-                    case "print_field_descending":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Нe введено поле элемента");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            PrintFieldDescending(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-                    case "max":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Нe введено поле элемента");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            Max(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-
-                    case "min":
-                        if (tokens.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Нe введено поле элемента");
-                            break;
-                        }
-                        else if (tokens.Length == 2)
-                        {
-                            Min(tokens[1]);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            break;
-                        }
-                    default:
-                        Console.WriteLine("Неверный ввод");
-                        break;
+                    Program.CommandProcessing(item);
                 }
+                else
+                {
+                    break;
+                }
+                
             }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Скрипт-файл был выполнен");

@@ -8,12 +8,19 @@ namespace Lab_02
         public static readonly string ProgPath = D.GetParent(D.GetCurrentDirectory()).Parent.Parent.FullName;
         public static string FilePath = null;
         public static HashSet<Knight> Set = new HashSet<Knight>();
+        public static HashSet<int> Ids = new HashSet<int>();
+        public static bool Flag = true;
         public static DateTime DateSetInit;
         static void Main()
         {
             Console.CancelKeyPress += ControlCancel;
             LoadFile();
-            CommandProcessing();
+            Console.WriteLine("Введите команду. [help - вывести справку по доступным командам]");
+            while (Flag)
+            {
+                CommandProcessing(Console.ReadLine().Trim());
+            }
+            
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("Программа завершилась");
             Console.ForegroundColor = ConsoleColor.White;
@@ -37,19 +44,24 @@ namespace Lab_02
                         Console.WriteLine("Была загружена коллекция из " + FilePath);
                         string json = File.ReadAllText(FilePath);
                         Set = J.Deserialize<HashSet<Knight>>(json);
+
+                        foreach (var item in Set)
+                        {
+                            Ids.Add(item.Id);
+                        }
                         DateSetInit = DateTime.Now;
 
                     }
                     else
                     {
-                        Console.WriteLine("Был создана новая коллекция по пути " + FilePath);
+                        
 
                         
                         File.WriteAllText(FilePath, "[]");
                         
                         
                         DateSetInit = DateTime.Now;
-
+                        Console.WriteLine("Был создана новая коллекция по пути " + FilePath);
 
                     }
 
@@ -63,157 +75,175 @@ namespace Lab_02
 
             } while (true);
         }
-        static void CommandProcessing()
+        static public void CommandProcessing(string arg)
         {
-            Console.WriteLine("Введите команду. [help - вывести справку по доступным командам]");
-            
-            start:
-            try
-            {
-                string[] args = Console.ReadLine().Trim().Split(" ");
-                switch (args[0])
+                try
                 {
-                    case "help":
-                        Cmd.Help();
-                        goto start;
-                    case "info":
-                        Cmd.Info();
-                        goto start;
-                    case "show":
-                        Cmd.Show();
-                        goto start;
-                    case "insert":
+                    string[] args = arg.Trim().Split(" ");
+                    switch (args[0])
+                    {
+                        case "help":
+                            if(args.Length == 1)
+                            {
+                                Cmd.Help();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод аргументов");
+                            }
+                            break;
+                        case "info":
                         if (args.Length == 1)
                         {
-                            Console.WriteLine("Ошибка. Не введен id элемента");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.Insert(args[1]);
-                            goto start;
+                            Cmd.Info();
                         }
                         else
                         {
                             Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
                         }
-                    case "update":
-                        if (args.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Не введен id элемента");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.Update(args[1]);
-                            goto start;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
-                        }
-                    case "remove":
-                        if (args.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Не введен id элемента");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.Remove(args[1]);
-                            goto start;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
-                        }
-                    case "clear":
-                        Cmd.Clear();
-                        goto start;
-                    case "save":
-                        Cmd.Save();
-                        goto start;
-                    case "execute_script":
-                        if (args.Length == 1)
-                        {
-                            Console.WriteLine("Ошибка. Нe введенно имя файла");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.ExecuteScript(args[1]);
-                            goto start;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
-                        }
-                    case "exit":
                         break;
-                    case "print_field_descending":
+                    case "show":
                         if (args.Length == 1)
                         {
-                            Console.WriteLine("Ошибка. Нe введено поле элемента");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.PrintFieldDescending(args[1]);
-                            goto start;
+                            Cmd.Show();
                         }
                         else
                         {
                             Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
                         }
-                    case "max":
+                        break;
+                        case "insert":
                         if (args.Length == 1)
                         {
-                            Console.WriteLine("Ошибка. Нe введено поле элемента");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.Max(args[1]);
-                            goto start;
+                            Cmd.Insert();
                         }
                         else
                         {
                             Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
                         }
-
-                    case "min":
+                        break;
+                        case "remove":
+                            if (args.Length == 1)
+                            {
+                                Console.WriteLine("Ошибка. Не введен id элемента");
+                                break;
+                            }
+                            else if (args.Length == 2)
+                            {
+                                Cmd.Remove(args[1]);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод аргументов");
+                                break;
+                            }
+                        case "clear":
                         if (args.Length == 1)
                         {
-                            Console.WriteLine("Ошибка. Нe введено поле элемента");
-                            goto start;
-                        }
-                        else if (args.Length == 2)
-                        {
-                            Cmd.Min(args[1]);
-                            goto start;
+                            Cmd.Clear();
                         }
                         else
                         {
                             Console.WriteLine("Некорректный ввод аргументов");
-                            goto start;
                         }
-                    default:
-                        Console.WriteLine("Неверный ввод");
-                        goto start;
+                        break;
+                        case "save":
+                        if (args.Length == 1)
+                        {
+                            Cmd.Save();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                        }
+                        break;
+                        case "execute_script":
+                            if (args.Length == 1)
+                            {
+                                Console.WriteLine("Ошибка. Нe введенно имя файла");
+                                break;
+                            }
+                            else if (args.Length == 2)
+                            {
+                                Cmd.ExecuteScript(args[1]);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод аргументов");
+                                break;
+                            }
+                        case "exit":
+                        if (args.Length == 1)
+                        {
+                            Flag = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректный ввод аргументов");
+                        }
+                        break;
+                        case "print_field_descending":
+                            if (args.Length == 1)
+                            {
+                                Console.WriteLine("Ошибка. Нe введено поле элемента");
+                                break;
+                            }
+                            else if (args.Length == 2)
+                            {
+                                Cmd.PrintFieldDescending(args[1]);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод аргументов");
+                                break;
+                            }
+                        case "max":
+                            if (args.Length == 1)
+                            {
+                                Console.WriteLine("Ошибка. Нe введено поле элемента");
+                                break;
+                            }
+                            else if (args.Length == 2)
+                            {
+                                Cmd.Max(args[1]);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод аргументов");
+                                break;
+                            }
+                        case "min":
+                            if (args.Length == 1)
+                            {
+                                Console.WriteLine("Ошибка. Нe введено поле элемента");
+                                break;
+                            }
+                            else if (args.Length == 2)
+                            {
+                                Cmd.Min(args[1]);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод аргументов");
+                                break;
+                            }
+                        default:
+                            Console.WriteLine("Неверный ввод");
+                            break;
+                    }
                 }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Ошибка ввода: " + e.Message);
-                goto start;
-            }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Ошибка ввода: " + e.Message);
+                    
+                }
         }
+        
 
         static async void ControlCancel(object? sender, ConsoleCancelEventArgs e)
         {
