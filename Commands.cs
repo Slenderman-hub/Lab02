@@ -393,7 +393,17 @@ namespace Lab_02
                 return;
             }
             HashSet<string> cmds = ["help", "info", "show", "insert", "update", "remove", "clear", "save", "execute_script", "exit", "print_field_descending", "max", "min"];
-            List<string> args = File.ReadAllText(filePath).Split(',').ToList();
+            List<string> args = new List<string>(0);
+            try
+            {
+                args = File.ReadAllText(filePath).Split(',').ToList();
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine("Ошибка работы с файлом:" + ex.Message);
+                return;
+            }
+            
             foreach(var item in args)
             {
                 if (!cmds.Contains(item.Split(' ')[0]))
