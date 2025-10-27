@@ -70,7 +70,7 @@ namespace Lab_02
                     foreach (var item in Program.Set)
                     {
 
-                        Console.WriteLine($"Id : {item.Id}, Класс: {item.ClassName}, Имя: {item.Name}, Шанс крит. удара: {item.CritChance}, Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                        Console.WriteLine(item.ToString());
                         Console.WriteLine("\n");
 
                     }
@@ -220,35 +220,35 @@ namespace Lab_02
                     case "Id":
                         foreach (var item in Program.Set.OrderByDescending(item => item.Id))
                         {
-                            Console.WriteLine($"Id : {item.Id}, Класс:{item.ClassName} Имя: {item.Name},Шанс крит. удара: {item.CritChance},Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                            Console.WriteLine(item.ToString());
                             Console.WriteLine("\n");
                         }
                         break;
                     case "CritChance":
                         foreach (var item in Program.Set.OrderByDescending(item => item.CritChance))
                         {
-                            Console.WriteLine($"Id : {item.Id}, Класс:{item.ClassName} Имя: {item.Name},Шанс крит. удара: {item.CritChance},Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                            Console.WriteLine(item.ToString());
                             Console.WriteLine("\n");
                         }
                         break;
                     case "Health":
                         foreach (var item in Program.Set.OrderByDescending(item => item.Health))
                         {
-                            Console.WriteLine($"Id : {item.Id}, Класс:{item.ClassName} Имя: {item.Name},Шанс крит. удара: {item.CritChance},Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                            Console.WriteLine(item.ToString());
                             Console.WriteLine("\n");
                         }
                         break;
                     case "Shield":
                         foreach (var item in Program.Set.OrderByDescending(item => item.Shield.Def))
                         {
-                            Console.WriteLine($"Id : {item.Id}, Класс:{item.ClassName} Имя: {item.Name},Шанс крит. удара: {item.CritChance},Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                            Console.WriteLine(item.ToString());
                             Console.WriteLine("\n");
                         }
                         break;
                     case "Weapon":
                         foreach (var item in Program.Set.OrderByDescending(item => item.Weapon.Damage))
                         {
-                            Console.WriteLine($"Id : {item.Id}, Класс:{item.ClassName} Имя: {item.Name},Шанс крит. удара: {item.CritChance},Здоровье: {item.Health}, Акт. Навык: {item.ASkill}, Пассивный навык: {item.PSkill},\n Щит: {item.Shield.Def},Оружие: {item.Weapon.Name}, Урон Оружия: {item.Weapon.Damage}");
+                            Console.WriteLine(item.ToString());
                             Console.WriteLine("\n");
                         }
                         break;
@@ -283,32 +283,32 @@ namespace Lab_02
                             int maxId = Program.Set.Max(item => item.Id);
                             Knight maxIdKnight = Program.Set.First(item => item.Id == maxId);
                             Console.WriteLine();
-                            Console.WriteLine($"Id : {maxIdKnight.Id}, Класс:{maxIdKnight.ClassName} Имя: {maxIdKnight.Name},Шанс крит. удара: {maxIdKnight.CritChance},Здоровье: {maxIdKnight.Health}, Акт. Навык: {maxIdKnight.ASkill}, Пассивный навык: {maxIdKnight.PSkill},\n Щит: {maxIdKnight.Shield.Def},Оружие: {maxIdKnight.Weapon.Name}, Урон Оружия: {maxIdKnight.Weapon.Damage}");
+                            Console.WriteLine(maxIdKnight.ToString());
                             break;
                         case "Health":
                             decimal maxHp = Program.Set.Max(item => item.Health);
                             Knight maxHpKnight = Program.Set.First(item => item.Health == maxHp);
                             Console.WriteLine();
-                            Console.WriteLine($"Id : {maxHpKnight.Id}, Класс:{maxHpKnight.ClassName} Имя: {maxHpKnight.Name},Шанс крит. удара: {maxHpKnight.CritChance},Здоровье: {maxHpKnight.Health}, Акт. Навык: {maxHpKnight.ASkill}, Пассивный навык: {maxHpKnight.PSkill},\n Щит: {maxHpKnight.Shield.Def},Оружие: {maxHpKnight.Weapon.Name}, Урон Оружия: {maxHpKnight.Weapon.Damage}");
+                            Console.WriteLine(maxHpKnight.ToString());
                             break;
 
                         case "CritChance":
                             int maxCC = Program.Set.Max(item => item.CritChance);
                             Knight maxCCKnight = Program.Set.First(item => item.CritChance == maxCC);
                             Console.WriteLine();
-                            Console.WriteLine($"Id : {maxCCKnight.Id}, Класс:{maxCCKnight.ClassName} Имя: {maxCCKnight.Name},Шанс крит. удара: {maxCCKnight.CritChance},Здоровье: {maxCCKnight.Health}, Акт. Навык: {maxCCKnight.ASkill}, Пассивный навык: {maxCCKnight.PSkill},\n Щит: {maxCCKnight.Shield.Def},Оружие: {maxCCKnight.Weapon.Name}, Урон Оружия: {maxCCKnight.Weapon.Damage}");
+                            Console.WriteLine(maxCCKnight.ToString());
                             break;
                         case "Shield":
                             int maxDef = Program.Set.Max(item => item.Shield.Def);
                             Knight maxDefKnight = Program.Set.First(item => item.Shield.Def == maxDef);
                             Console.WriteLine();
-                            Console.WriteLine($"Id : {maxDefKnight.Id}, Класс:{maxDefKnight.ClassName} Имя: {maxDefKnight.Name},Шанс крит. удара: {maxDefKnight.CritChance},Здоровье: {maxDefKnight.Health}, Акт. Навык: {maxDefKnight.ASkill}, Пассивный навык: {maxDefKnight.PSkill},\n Щит: {maxDefKnight.Shield.Def},Оружие: {maxDefKnight.Weapon.Name}, Урон Оружия: {maxDefKnight.Weapon.Damage}");
+                            Console.WriteLine(maxDefKnight.ToString());
                             break;
                         case "Weapon":
                             int maxDmg = Program.Set.Max(item => item.Weapon.Damage);
                             Knight maxDmgKnight = Program.Set.First(item => item.Weapon.Damage == maxDmg);
                             Console.WriteLine();
-                            Console.WriteLine($"Id : {maxDmgKnight.Id}, Класс:{maxDmgKnight.ClassName} Имя: {maxDmgKnight.Name},Шанс крит. удара: {maxDmgKnight.CritChance},Здоровье: {maxDmgKnight.Health}, Акт. Навык: {maxDmgKnight.ASkill}, Пассивный навык: {maxDmgKnight.PSkill},\n Щит: {maxDmgKnight.Shield.Def},Оружие: {maxDmgKnight.Weapon.Name}, Урон Оружия: {maxDmgKnight.Weapon.Damage}");
+                            Console.WriteLine(maxDmgKnight.ToString());
                             break;
                         default:
                             Console.WriteLine("Неккоректное поле");
@@ -345,32 +345,32 @@ namespace Lab_02
                         int minId = Program.Set.Min(item => item.Id);
                         Knight minIdKnight = Program.Set.First(item => item.Id == minId);
                         Console.WriteLine();
-                        Console.WriteLine($"Id : {minIdKnight.Id}, Класс:{minIdKnight.ClassName} Имя: {minIdKnight.Name},Шанс крит. удара: {minIdKnight.CritChance},Здоровье: {minIdKnight.Health}, Акт. Навык: {minIdKnight.ASkill}, Пассивный навык: {minIdKnight.PSkill},\n Щит: {minIdKnight.Shield.Def},Оружие: {minIdKnight.Weapon.Name}, Урон Оружия: {minIdKnight.Weapon.Damage}");
+                        Console.WriteLine(minIdKnight.ToString());
                         break;
                     case "Health":
                         decimal minHp = Program.Set.Min(item => item.Health);
                         Knight minHpKnight = Program.Set.First(item => item.Health == minHp);
                         Console.WriteLine();
-                        Console.WriteLine($"Id : {minHpKnight.Id}, Класс:{minHpKnight.ClassName} Имя: {minHpKnight.Name},Шанс крит. удара: {minHpKnight.CritChance},Здоровье: {minHpKnight.Health}, Акт. Навык: {minHpKnight.ASkill}, Пассивный навык: {minHpKnight.PSkill},\n Щит: {minHpKnight.Shield.Def},Оружие: {minHpKnight.Weapon.Name}, Урон Оружия: {minHpKnight.Weapon.Damage}");
+                        Console.WriteLine(minHpKnight.ToString());
                         break;
 
                     case "CritChance":
                         int minCC = Program.Set.Min(item => item.CritChance);
                         Knight minCCKnight = Program.Set.First(item => item.CritChance == minCC);
                         Console.WriteLine();
-                        Console.WriteLine($"Id : {minCCKnight.Id}, Класс:{minCCKnight.ClassName} Имя: {minCCKnight.Name},Шанс крит. удара: {minCCKnight.CritChance},Здоровье: {minCCKnight.Health}, Акт. Навык: {minCCKnight.ASkill}, Пассивный навык: {minCCKnight.PSkill},\n Щит: {minCCKnight.Shield.Def},Оружие: {minCCKnight.Weapon.Name}, Урон Оружия: {minCCKnight.Weapon.Damage}");
+                        Console.WriteLine(minCCKnight.ToString());
                         break;
                     case "Shield":
                         int minDef = Program.Set.Min(item => item.Shield.Def);
                         Knight minDefKnight = Program.Set.First(item => item.Shield.Def == minDef);
                         Console.WriteLine();
-                        Console.WriteLine($"Id : {minDefKnight.Id}, Класс:{minDefKnight.ClassName} Имя: {minDefKnight.Name},Шанс крит. удара: {minDefKnight.CritChance},Здоровье: {minDefKnight.Health}, Акт. Навык: {minDefKnight.ASkill}, Пассивный навык: {minDefKnight.PSkill},\n Щит: {minDefKnight.Shield.Def},Оружие: {minDefKnight.Weapon.Name}, Урон Оружия: {minDefKnight.Weapon.Damage}");
+                        Console.WriteLine(minDefKnight.ToString());
                         break;
                     case "Weapon":
                         int minDmg = Program.Set.Min(item => item.Weapon.Damage);
                         Knight minDmgKnight = Program.Set.First(item => item.Weapon.Damage == minDmg);
                         Console.WriteLine();
-                        Console.WriteLine($"Id : {minDmgKnight.Id}, Класс:{minDmgKnight.ClassName} Имя: {minDmgKnight.Name},Шанс крит. удара: {minDmgKnight.CritChance},Здоровье: {minDmgKnight.Health}, Акт. Навык: {minDmgKnight.ASkill}, Пассивный навык: {minDmgKnight.PSkill},\n Щит: {minDmgKnight.Shield.Def},Оружие: {minDmgKnight.Weapon.Name}, Урон Оружия: {minDmgKnight.Weapon.Damage}");
+                        Console.WriteLine(minDmgKnight.ToString());
                         break;
                     default:
                         Console.WriteLine("Некорректное поле");
@@ -393,7 +393,16 @@ namespace Lab_02
                 return;
             }
             HashSet<string> cmds = ["help", "info", "show", "insert", "update", "remove", "clear", "save", "execute_script", "exit", "print_field_descending", "max", "min"];
-            List<string> args = File.ReadAllText(filePath).Split(',').ToList();
+            List<string> args = new List<string>(0);
+            try
+            {
+             args = File.ReadAllText(filePath).Split(',').ToList();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Ошибка файла: " +e.Message);
+                return;
+            }
             foreach(var item in args)
             {
                 if (!cmds.Contains(item.Split(' ')[0]))

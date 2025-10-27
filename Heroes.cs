@@ -100,7 +100,9 @@ namespace Lab_02
         }
         public override string ToString()
         {
-            return $"{this.Name}";
+            string weaponInfo = Weapon != null ? $"{Weapon.Name} (Урон: {Weapon.Damage})" : "Отсутствует";
+            string shieldInfo = Shield.Def > 0 ? Shield.Def.ToString() : "Отсутствует";
+            return $"ID: {Id}, Имя: {Name}, Класс: {ClassName}, Здоровье: {Health}, Шанс крита: {CritChance}, Пассивный навык: {PSkill}, Активный навык: {ASkill}, Оружие: {weaponInfo}, Защита: {shieldInfo}";
         }
 
     }
@@ -236,5 +238,6 @@ namespace Lab_02
             return knight;
 
         }
+        
     } 
 }
