@@ -182,6 +182,7 @@ namespace Lab_02
         public static void Clear()
         {
             Program.Set.Clear();
+            Program.Ids.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Коллекция была очищена");
             Console.ForegroundColor = ConsoleColor.White;
